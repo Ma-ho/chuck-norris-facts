@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
   <title>Ajax quest challenge</title>
   <link rel="icon" type="image/png" href="favicon.png" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css">
@@ -12,6 +11,28 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
     integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
   <style>
+      body{
+        background: rgb(20, 20, 20);
+        height: 100vh;
+      }
+    .container{
+      text-align: center;
+      width: 80%;
+      }
+    .title, p strong{
+      color: wheat;
+    }
+    button {
+      margin-bottom: 30px;
+      background: transparent;
+      padding: 10px 20px;
+      color:#7fffd4;
+      border: 2px solid #7fffd4;
+    }
+    button:hover {
+      background: #7fffd4;
+      color:rgb(20, 20, 20);
+    }
   </style>
 </head>
 
@@ -19,17 +40,37 @@
   <section class="section">
     <div class="container">
       <h1 class="title">Chuck Norris Jokes</h1>
-      <p>Reload for another joke!</p>
-
-      <div class="content" id="chuck-norris">
+      <button onclick="fetchChucknorrisJSON()">Reload for another amazing joke!</button>
+      <div class="content" id="chucknorris">
       </div>
     </div>
-
   </section>
 
   <!-- We need to load axios first! -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js" integrity="sha256-S1J4GVHHDMiirir9qsXWc8ZWw74PHHafpsHp5PXtjTs=" crossorigin="anonymous"></script>
   <script>
+// This function loads chucknorris quotes from the Chucknorris API
+function fetchChucknorrisJSON() {
+  // Feel free to download this HTML and edit it, to use another Chucknorris ID
+  const chucknorrisId = 1;
+  const url = `https://api.chucknorris.io/jokes/random/`;
+  axios.get(url)
+    .then(function(response) {
+      return response.data; // SUBTLE difference with Fetch: response.data instead of response.json()
+    })
+    .then(function(chucknorris) {
+      console.log('data decoded from JSON:', chucknorris);
+
+      // Build a block of HTML
+      const chucknorrisHtml = `
+        <p><strong>${chucknorris.value}</strong></p>
+        <img src="${chucknorris.icon_url}" />
+      `;
+      document.querySelector('#chucknorris').innerHTML = chucknorrisHtml;
+    });
+}
+
+fetchChucknorrisJSON();
 
   </script>
 </body>
